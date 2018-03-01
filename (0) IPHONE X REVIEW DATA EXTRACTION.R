@@ -2,8 +2,8 @@ require(stringr)||install.packages("stringr"); library(stringr)
 require(utils)||install.packages("utils"); library(utils)  
 
 
-Amazon = function(url,        # first click on show all or top review
-                  n )       # Number of pages to extarct
+Amazon = function(url,      
+                  n )       
   
 {           
   
@@ -16,25 +16,25 @@ Amazon = function(url,        # first click on show all or top review
     
     p =i*10	
     e = "&rating=1,2,3,4,5&reviewers=all&type=all&sort=most_helpful&start="
-    url0 = paste(url,e,p,sep="")           # url in correct format
+    url0 = paste(url,e,p,sep="")           
     
     text = readLines(url0)     # Read URL       
     
-    text_start = grep("a-size-base review-text",text)   # review start marker
+    text_start = grep("a-size-base review-text",text)   # start marker
     
-    text_stop = grep("a-row a-expander-container a-expander-inline-container", text)  # review end marker
+    text_stop = grep("a-row a-expander-container a-expander-inline-container", text)  # end marker
     
     
     setTxtProgressBar(pb, i)             # print progress bar
     
-    if (length(text_start) == 0) break    # check for loop termination, i.e valid page found      
+    if (length(text_start) == 0) break    # checking for loop termination, i.e valid page found      
     
-    for(j in 1:length(text_start))        # Consolidate all reviews     
+    for(j in 1:length(text_start))             
     {
       text_temp = paste(paste(text[(text_start[j]+1):(text_stop[j])]),collapse=" ")
       text_page = c(text_page,text_temp)
     }
-    #Sys.sleep(1)
+    
   }
   
   text_page =gsub("<.*?>", "", text_page)       # regex for Removing HTML character 
